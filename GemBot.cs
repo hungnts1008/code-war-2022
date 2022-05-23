@@ -102,16 +102,36 @@ namespace bot
             {
                 return;
             }
-
-            Hero heroFullMana = botPlayer.anyHeroFullMana();
-            if (heroFullMana != null)
+            Hero FirstFull=botPlayer.HeroFirstFullMana();
+            if(FirstFull != null)
             {
-                TaskSchedule(delaySwapGem, _ => SendCastSkill(heroFullMana));
+                TaskSchedule(delaySwapGem, _ => SendCastSkill(FirstFull));
+                grid.temp++;
                 return;
             }
-            TaskSchedule(delaySwapGem, _ => SendSwapGem());
-
-
+            else
+            {
+                if(grid.CheckSkillorSwap() == true)
+                {
+                    TaskSchedule(delaySwapGem, _ => SendSwapGem());
+                    return;
+                }
+                else
+                {
+                    Hero CheckHero2 = botPlayer.IsHeroFullMana(1);
+                    if(CheckHero2 != null)  TaskSchedule(delaySwapGem, _ => SendCastSkill(CheckHero2));
+                    else
+                    {
+                        Hero CheckHero3 = botPlayer.IsHeroFullMana(2);
+                        if(CheckHero3 != null)
+                        {
+                            if(enemyPlayer.HeroHasMaxDamage().attack > 10)   TaskSchedule(delaySwapGem, _ => SendCastSkill(CheckHero3));
+                            else TaskSchedule(delaySwapGem, _ =>SendSwapGem());
+                        }
+                        else TaskSchedule(delaySwapGem,_ =>SendSwapGem());
+                    }
+                }
+            }
         }
 
         protected bool isBotTurn()

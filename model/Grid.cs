@@ -9,6 +9,8 @@ namespace bot {
         public HashSet<GemType> gemTypes = new HashSet<GemType>();
         private HashSet<GemType> myHeroGemType;
 
+        public int temp=0;
+
         public Grid(ISFSArray gemsCode, HashSet<GemType> gemTypes)
         {
             updateGems(gemsCode);
@@ -37,15 +39,45 @@ namespace bot {
             if (matchGemSizeThanFour != null) {
                 return matchGemSizeThanFour.getIndexSwapGem();
             }
-            GemSwapInfo matchGemSizeThanThree = listMatchGem.Where(gemMatch => gemMatch.sizeMatch > 3).FirstOrDefault();
-            if (matchGemSizeThanThree != null) {
-                return matchGemSizeThanThree.getIndexSwapGem();
+
+            GemSwapInfo matchGemSizeThanThreeAndItsSword = listMatchGem.Where(gemMatch => gemMatch.sizeMatch > 3 && gemMatch.type == GemType.SWORD).FirstOrDefault();
+            if (matchGemSizeThanThreeAndItsSword != null) {
+                return matchGemSizeThanThreeAndItsSword.getIndexSwapGem();
             }
+
             GemSwapInfo matchGemSword = listMatchGem.Where(gemMatch => gemMatch.type == GemType.SWORD).FirstOrDefault();
             if (matchGemSword != null) {
                 return matchGemSword.getIndexSwapGem();
             }
 
+            GemSwapInfo matchGemSizeThanThree = listMatchGem.Where(gemMatch => gemMatch.sizeMatch > 3 ).FirstOrDefault();
+            if (matchGemSizeThanThree != null) {
+                return matchGemSizeThanThree.getIndexSwapGem();
+            }
+            
+            GemSwapInfo matchGemNone = listMatchGem.Where(gemMatch => gemMatch.type == GemType.BROWN).FirstOrDefault();
+            if(matchGemNone != null) return matchGemNone.getIndexSwapGem();
+            
+            GemSwapInfo matchGemBlue = listMatchGem.Where(gemMatch => gemMatch.type == GemType.BLUE).FirstOrDefault();
+            if(matchGemBlue != null) return matchGemBlue.getIndexSwapGem();
+
+            if(temp==0)
+            {
+                GemSwapInfo matchGemGreen = listMatchGem.Where(gemMatch => gemMatch.type == GemType.GREEN).FirstOrDefault();
+                if(matchGemGreen != null) return matchGemGreen.getIndexSwapGem();
+
+                GemSwapInfo matchGemYellow = listMatchGem.Where(gemMatch => gemMatch.type == GemType.YELLOW).FirstOrDefault();
+                if(matchGemYellow != null) return matchGemYellow.getIndexSwapGem();
+            }
+
+            else
+            {
+                GemSwapInfo matchGemGreen = listMatchGem.Where(gemMatch => gemMatch.type == GemType.RED).FirstOrDefault();
+                if(matchGemGreen != null) return matchGemGreen.getIndexSwapGem();
+
+                GemSwapInfo matchGemYellow = listMatchGem.Where(gemMatch => gemMatch.type == GemType.PURPLE).FirstOrDefault();
+                if(matchGemYellow != null) return matchGemYellow.getIndexSwapGem();
+            }
             foreach (GemType type in myHeroGemType) {
                 GemSwapInfo matchGem = listMatchGem.Where(gemMatch => gemMatch.type == type).FirstOrDefault();
                         //listMatchGem.stream().filter(gemMatch -> gemMatch.getType() == type).findFirst();
@@ -56,7 +88,16 @@ namespace bot {
             return listMatchGem[0].getIndexSwapGem();
         }
 
-        private List<GemSwapInfo> suggestMatch() {
+        public bool CheckSkillorSwap()
+        {
+            List<GemSwapInfo> listMatchGem = suggestMatch();
+            if (listMatchGem.Count == 0)    return false;
+            GemSwapInfo matchGemSizeThanFour = listMatchGem.Where(gemMatch => gemMatch.sizeMatch > 4).FirstOrDefault();
+            if (matchGemSizeThanFour != null) return true;
+            return false;
+        }
+
+        public List<GemSwapInfo> suggestMatch() {
             var listMatchGem = new List<GemSwapInfo>();
 
             var tempGems = new List<Gem>(gems);

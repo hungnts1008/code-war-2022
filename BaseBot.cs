@@ -14,9 +14,9 @@ namespace bot
         private SmartFox sfs;
         private const string IP = "172.16.100.112";
         // private const string IP = "10.10.10.18";
-        private const string username = "trung.hoangdinh";
+        private const string username = "hung.phamduc";
 
-        private const string token = "bot";
+        private const string token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJodW5nLnBoYW1kdWMiLCJhdXRoIjoiUk9MRV9VU0VSIiwiTEFTVF9MT0dJTl9USU1FIjoxNjUyODU4NDk3MTgwLCJleHAiOjE2NTQ2NTg0OTd9.PtqhcksBHkTIQg8UlD_GsJf9fHD-cAiPweSZ-GjhyM57X3dtAoUI1P_yVGQs3WOp9Ao1pSqvRJ5c9QLHnj97_w";
 
         private const int TIME_INTERVAL_IN_MILLISECONDS = 1000;
         private const int ENEMY_PLAYER_ID = 0;
@@ -224,11 +224,22 @@ namespace bot
             data.PutUtfString("casterId", heroCastSkill.id.ToString());
             if (heroCastSkill.isHeroSelfSkill())
             {
-                data.PutUtfString("targetId", botPlayer.firstHeroAlive().id.ToString());
+                if(heroCastSkill == botPlayer.heroes[0])
+                {
+                    data.PutUtfString("targetId", botPlayer.SecondPlayer().id.ToString());
+                }
+                else
+                {
+                    data.PutUtfString("targetId", botPlayer.firstHeroAlive().id.ToString());
+                }
             }
             else
             {
-                data.PutUtfString("targetId", enemyPlayer.firstHeroAlive().id.ToString());
+                if(heroCastSkill == botPlayer.heroes[2])
+                {
+                    data.PutUtfString("targetId", enemyPlayer.HeroHasMaxDamage().id.ToString());
+                }
+                else data.PutUtfString("targetId", enemyPlayer.firstHeroAlive().id.ToString());
             }
 
             data.PutUtfString("selectedGem", selectGem().ToString());

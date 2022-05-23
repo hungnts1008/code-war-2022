@@ -10,9 +10,9 @@ namespace bot
         public ArrayList gemTypes = new ArrayList();
         private int maxHp; // Hp
         private int maxMana; // Mp
-        private int attack;
-        private int hp;
-        private int mana;
+        public int attack;
+        public int hp;
+        public int mana;
 
         public Hero(ISFSObject objHero) {
             this.playerId = objHero.GetInt("playerId");
