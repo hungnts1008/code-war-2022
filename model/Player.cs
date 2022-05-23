@@ -30,6 +30,21 @@ namespace bot {
             else return firstHeroAlive();
         }
 
+        public Hero HeroHasMinHealth()
+        {
+            int health = 100;
+            Hero res=null;
+            foreach (var hero in heroes)
+            {
+                if(hero.hp < health) 
+                {
+                    health = hero.hp;
+                    res=hero;
+                }
+            }
+            return res;
+        }
+
         public Hero HeroHasMaxDamage()
         {
             int dame=0;

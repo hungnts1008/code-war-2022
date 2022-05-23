@@ -125,7 +125,8 @@ namespace bot
                         Hero CheckHero3 = botPlayer.IsHeroFullMana(2);
                         if(CheckHero3 != null)
                         {
-                            if(enemyPlayer.HeroHasMaxDamage().attack > 10)   TaskSchedule(delaySwapGem, _ => SendCastSkill(CheckHero3));
+                            if(enemyPlayer.HeroHasMaxDamage()!=null && enemyPlayer.HeroHasMaxDamage().attack > 10 
+                                && enemyPlayer.HeroHasMinHealth()!=null && enemyPlayer.HeroHasMinHealth().hp <= 20)   TaskSchedule(delaySwapGem, _ => SendCastSkill(CheckHero3));
                             else TaskSchedule(delaySwapGem, _ =>SendSwapGem());
                         }
                         else TaskSchedule(delaySwapGem,_ =>SendSwapGem());
