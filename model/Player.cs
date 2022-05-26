@@ -22,14 +22,19 @@ namespace bot {
             if(heroes[0].isAlive() && heroes[0].isFullMana())   return heroes[0];
             else return null;
         }
-        
-        public Hero SecondPlayer()
-        {
-            if(heroes[1].isAlive() ) return heroes[1];
-            else if(heroes[2].isAlive() ) return heroes[2];
-            else return firstHeroAlive();
-        }
 
+        public bool HasAnyBotFullMana()
+        {
+            for(int i =1 ; i<3;i++)
+            {
+                if(IsHeroFullMana(i) != null)    return true;
+            }
+            return false;
+        }
+        public bool HeroAlive(int Num)
+        {
+            return heroes[Num].isAlive();
+        }
         public Hero HeroHasMinHealth()
         {
             int health = 100;
@@ -59,6 +64,7 @@ namespace bot {
             }
             return Founded;
         }
+
         public Hero firstHeroAlive() {
             foreach(var hero in heroes){
                 if (hero.isAlive()) return hero;

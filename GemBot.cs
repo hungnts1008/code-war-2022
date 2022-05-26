@@ -102,35 +102,35 @@ namespace bot
             {
                 return;
             }
+            if(grid.CheckSkillorSwap() == true)
+            {
+                TaskSchedule(delaySwapGem, _ => SendSwapGem());
+                return;
+            }
+
             Hero FirstFull=botPlayer.HeroFirstFullMana();
-            if(FirstFull != null)
+            if(FirstFull != null) grid.temp++;
+
+            if(FirstFull != null && (FirstFull.hp < 20 || botPlayer.HasAnyBotFullMana()))
             {
                 TaskSchedule(delaySwapGem, _ => SendCastSkill(FirstFull));
-                grid.temp++;
                 return;
             }
             else
             {
-                if(grid.CheckSkillorSwap() == true)
+                Hero CheckHero2 = botPlayer.IsHeroFullMana(1);
+                if(CheckHero2 != null)  
                 {
-                    TaskSchedule(delaySwapGem, _ => SendSwapGem());
-                    return;
+                    TaskSchedule(delaySwapGem, _ => SendCastSkill(CheckHero2));
                 }
                 else
                 {
-                    Hero CheckHero2 = botPlayer.IsHeroFullMana(1);
-                    if(CheckHero2 != null)  TaskSchedule(delaySwapGem, _ => SendCastSkill(CheckHero2));
-                    else
-                    {
-                        Hero CheckHero3 = botPlayer.IsHeroFullMana(2);
-                        if(CheckHero3 != null)
-                        {
-                            if(enemyPlayer.HeroHasMaxDamage()!=null && enemyPlayer.HeroHasMaxDamage().attack > 10 
-                                && enemyPlayer.HeroHasMinHealth()!=null && enemyPlayer.HeroHasMinHealth().hp <= 20)   TaskSchedule(delaySwapGem, _ => SendCastSkill(CheckHero3));
-                            else TaskSchedule(delaySwapGem, _ =>SendSwapGem());
-                        }
-                        else TaskSchedule(delaySwapGem,_ =>SendSwapGem());
-                    }
+                     Hero CheckHero3 = botPlayer.IsHeroFullMana(2);
+                     if(CheckHero3 != null)
+                     {
+                         TaskSchedule(delaySwapGem, _ =>SendCastSkill(CheckHero3));
+                     }
+                     else TaskSchedule(delaySwapGem, _ => SendSwapGem());
                 }
             }
         }
