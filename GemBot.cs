@@ -111,7 +111,7 @@ namespace bot
             Hero FirstFull=botPlayer.HeroFirstFullMana();
             if(FirstFull != null) grid.temp++;
 
-            if(FirstFull != null && (FirstFull.hp <= 18 || botPlayer.HasAnyBotFullMana() ))
+            if(FirstFull != null && (FirstFull.hp <= 18 || botPlayer.HasAnyBotFullMana() || !botPlayer.heroes[2].isAlive()))
             {
                 TaskSchedule(delaySwapGem, _ => SendCastSkill(FirstFull));
                 return;

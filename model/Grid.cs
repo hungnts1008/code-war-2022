@@ -78,6 +78,11 @@ namespace bot {
             {
                 if(botPlayer.heroes[0].isAlive())
                 {
+                    GemSwapInfo matchGemSizeKiem = listMatchGem.Where(gemMatch => gemMatch.type == GemType.SWORD).FirstOrDefault();
+                    if (matchGemSizeKiem != null && enemyPlayer.firstHeroAlive().attack >=7) {
+                            return matchGemSizeKiem.getIndexSwapGem();
+                    }
+
                     GemSwapInfo matchGemGreen = listMatchGem.Where(gemMatch => gemMatch.type == GemType.GREEN).FirstOrDefault();
                     if(matchGemGreen != null && botPlayer.heroes[0].mana<6) return matchGemGreen.getIndexSwapGem();
 
