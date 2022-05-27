@@ -1,20 +1,24 @@
-
 using Sfs2X.Entities.Data;
 
 namespace bot {
     public class Grid
     {
+        protected Player botPlayer;
+        protected Player enemyPlayer;
+        //public BaseBot BaseBotDay;
         private List<Gem> gems = new List<Gem>();
         private ISFSArray gemsCode;
         public HashSet<GemType> gemTypes = new HashSet<GemType>();
         private HashSet<GemType> myHeroGemType;
-
+        public int ConSong = 0;
         public int temp=0;
 
-        public Grid(ISFSArray gemsCode, HashSet<GemType> gemTypes)
+        public Grid(ISFSArray gemsCode, HashSet<GemType> gemTypes, Player botPlayer, Player enemyPlayer)
         {
             updateGems(gemsCode);
             this.myHeroGemType = gemTypes;
+            this.botPlayer = botPlayer;
+            this.enemyPlayer = enemyPlayer;
         }
 
         public void updateGems(ISFSArray gemsCode) {
@@ -40,47 +44,92 @@ namespace bot {
                 return matchGemSizeThanFour.getIndexSwapGem();
             }
 
-            GemSwapInfo matchGemSizeThanThreeAndItsSword = listMatchGem.Where(gemMatch => gemMatch.sizeMatch > 3 && gemMatch.type == GemType.SWORD).FirstOrDefault();
-            if (matchGemSizeThanThreeAndItsSword != null) {
-                return matchGemSizeThanThreeAndItsSword.getIndexSwapGem();
+            GemSwapInfo matchGemSizeThanThreeAndItsSword1 = listMatchGem.Where(gemMatch => gemMatch.sizeMatch > 3 && gemMatch.type == GemType.SWORD).FirstOrDefault();
+            if (matchGemSizeThanThreeAndItsSword1 != null) {
+                    return matchGemSizeThanThreeAndItsSword1.getIndexSwapGem();
             }
 
-            GemSwapInfo matchGemSword = listMatchGem.Where(gemMatch => gemMatch.type == GemType.SWORD).FirstOrDefault();
-            if (matchGemSword != null) {
-                return matchGemSword.getIndexSwapGem();
+            GemSwapInfo matchGemSizeThanThreeAndItsBlue = listMatchGem.Where(gemMatch => gemMatch.sizeMatch > 3 && gemMatch.type == GemType.BLUE).FirstOrDefault();
+            if (matchGemSizeThanThreeAndItsBlue != null) {
+                    return matchGemSizeThanThreeAndItsBlue.getIndexSwapGem();
+            }
+            
+            GemSwapInfo matchGemSizeThanThreeAndItsYellow = listMatchGem.Where(gemMatch => gemMatch.sizeMatch > 3 && gemMatch.type == GemType.YELLOW).FirstOrDefault();
+            if (matchGemSizeThanThreeAndItsYellow != null) {
+                    return matchGemSizeThanThreeAndItsYellow.getIndexSwapGem();
             }
 
-            GemSwapInfo matchGemSizeThanThree = listMatchGem.Where(gemMatch => gemMatch.sizeMatch > 3 ).FirstOrDefault();
-            if (matchGemSizeThanThree != null) {
-                return matchGemSizeThanThree.getIndexSwapGem();
+            GemSwapInfo matchGemSizeThanThreeAndItsRed = listMatchGem.Where(gemMatch => gemMatch.sizeMatch > 3 && gemMatch.type == GemType.RED).FirstOrDefault();
+            if (matchGemSizeThanThreeAndItsRed != null) {
+                    return matchGemSizeThanThreeAndItsRed.getIndexSwapGem();
             }
-            
-            GemSwapInfo matchGemNone = listMatchGem.Where(gemMatch => gemMatch.type == GemType.BROWN).FirstOrDefault();
-            if(matchGemNone != null) return matchGemNone.getIndexSwapGem();
-            
-            GemSwapInfo matchGemBlue = listMatchGem.Where(gemMatch => gemMatch.type == GemType.BLUE).FirstOrDefault();
-            if(matchGemBlue != null) return matchGemBlue.getIndexSwapGem();
+
+            GemSwapInfo matchGemSizeThanThreeAndItsPurple = listMatchGem.Where(gemMatch => gemMatch.sizeMatch > 3 && gemMatch.type == GemType.PURPLE).FirstOrDefault();
+            if (matchGemSizeThanThreeAndItsPurple != null) {
+                    return matchGemSizeThanThreeAndItsPurple.getIndexSwapGem();
+            }
+            // cho nay k chay dc
+            GemSwapInfo matchGemSizeThanThree = listMatchGem.Where(gemMatch => gemMatch.type == GemType.SWORD).FirstOrDefault();
+            if (matchGemSizeThanThree != null && (enemyPlayer.DameOfFirstAlive() > 10 || botPlayer.DameOfFirstAlive()>10 )) {
+                    return matchGemSizeThanThree.getIndexSwapGem();
+            }
 
             if(temp==0)
             {
-                GemSwapInfo matchGemGreen = listMatchGem.Where(gemMatch => gemMatch.type == GemType.GREEN).FirstOrDefault();
-                if(matchGemGreen != null) return matchGemGreen.getIndexSwapGem();
+                if(botPlayer.heroes[0].isAlive())
+                {
+                    GemSwapInfo matchGemGreen = listMatchGem.Where(gemMatch => gemMatch.type == GemType.GREEN).FirstOrDefault();
+                    if(matchGemGreen != null) return matchGemGreen.getIndexSwapGem();
 
-                GemSwapInfo matchGemYellow = listMatchGem.Where(gemMatch => gemMatch.type == GemType.YELLOW).FirstOrDefault();
-                if(matchGemYellow != null) return matchGemYellow.getIndexSwapGem();
+                    GemSwapInfo matchGemYellow = listMatchGem.Where(gemMatch => gemMatch.type == GemType.YELLOW).FirstOrDefault();
+                    if(matchGemYellow != null) return matchGemYellow.getIndexSwapGem();
+                }
+                if(botPlayer.heroes[2].isAlive())
+                {
+                    GemSwapInfo matchGemBlue = listMatchGem.Where(gemMatch => gemMatch.type == GemType.BLUE).FirstOrDefault();
+                    if(matchGemBlue != null) return matchGemBlue.getIndexSwapGem();
+                }    
+
+                if(botPlayer.heroes[1].isAlive())
+                {
+                    GemSwapInfo matchGemRed = listMatchGem.Where(gemMatch => gemMatch.type == GemType.RED).FirstOrDefault();
+                    if(matchGemRed != null) return matchGemRed.getIndexSwapGem();
+
+                    GemSwapInfo matchGemPurple = listMatchGem.Where(gemMatch => gemMatch.type == GemType.PURPLE).FirstOrDefault();
+                    if(matchGemPurple != null) return matchGemPurple.getIndexSwapGem();
+                }
             }
 
             else
             {
-                GemSwapInfo matchGemGreen = listMatchGem.Where(gemMatch => gemMatch.type == GemType.RED).FirstOrDefault();
-                if(matchGemGreen != null) return matchGemGreen.getIndexSwapGem();
 
-                GemSwapInfo matchGemYellow = listMatchGem.Where(gemMatch => gemMatch.type == GemType.PURPLE).FirstOrDefault();
-                if(matchGemYellow != null) return matchGemYellow.getIndexSwapGem();
+                if(botPlayer.heroes[2].isAlive())
+                {
+                    GemSwapInfo matchGemBlue = listMatchGem.Where(gemMatch => gemMatch.type == GemType.BLUE).FirstOrDefault();
+                    if(matchGemBlue != null) return matchGemBlue.getIndexSwapGem();
+
+                    GemSwapInfo matchGemYellow = listMatchGem.Where(gemMatch => gemMatch.type == GemType.YELLOW).FirstOrDefault();
+                    if(matchGemYellow != null) return matchGemYellow.getIndexSwapGem();
+                }    
+
+                if(botPlayer.heroes[1].isAlive())
+                {
+                    GemSwapInfo matchGemRed = listMatchGem.Where(gemMatch => gemMatch.type == GemType.RED).FirstOrDefault();
+                    if(matchGemRed != null) return matchGemRed.getIndexSwapGem();
+
+                    GemSwapInfo matchGemPurple = listMatchGem.Where(gemMatch => gemMatch.type == GemType.PURPLE).FirstOrDefault();
+                    if(matchGemPurple != null) return matchGemPurple.getIndexSwapGem();
+                }
+                if(botPlayer.heroes[0].isAlive())
+                {
+                    GemSwapInfo matchGemGreen = listMatchGem.Where(gemMatch => gemMatch.type == GemType.GREEN).FirstOrDefault();
+                    if(matchGemGreen != null) return matchGemGreen.getIndexSwapGem();
+                }
             }
+            
+            // cai nay nen for cac hero con song
             foreach (GemType type in myHeroGemType) {
                 GemSwapInfo matchGem = listMatchGem.Where(gemMatch => gemMatch.type == type).FirstOrDefault();
-                        //listMatchGem.stream().filter(gemMatch -> gemMatch.getType() == type).findFirst();
                 if (matchGem != null) {
                     return matchGem.getIndexSwapGem();
                 }
@@ -92,8 +141,15 @@ namespace bot {
         {
             List<GemSwapInfo> listMatchGem = suggestMatch();
             if (listMatchGem.Count == 0)    return false;
+
             GemSwapInfo matchGemSizeThanFour = listMatchGem.Where(gemMatch => gemMatch.sizeMatch > 4).FirstOrDefault();
             if (matchGemSizeThanFour != null) return true;
+
+            GemSwapInfo matchGemSizeThanThree = listMatchGem.Where(gemMatch => gemMatch.type == GemType.SWORD).FirstOrDefault();
+            if (matchGemSizeThanThree != null && (enemyPlayer.DameOfFirstAlive() > 10 || botPlayer.DameOfFirstAlive()>10 )
+                && !enemyPlayer.HasAnyHeroFullMana()) {
+                    return true;
+            }
             return false;
         }
 
