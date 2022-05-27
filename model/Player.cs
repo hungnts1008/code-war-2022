@@ -7,6 +7,16 @@ namespace bot {
         public HashSet<GemType> heroGemType;
         protected Grid grid;
 
+        /*List<HeroIdEnum> HeroCounter = new List<HeroIdEnum>();
+
+        public void Start()
+        {
+            HeroCounter.Add(HeroIdEnum.CERBERUS);
+            HeroCounter.Add(HeroIdEnum.AIR_SPIRIT);
+            HeroCounter.Add(HeroIdEnum.THUNDER_GOD);
+            HeroCounter.Add(HeroIdEnum.FIRE_SPIRIT);
+        }*/
+
         public Player(int playerId, string name)
         {
             this.playerId = playerId;
@@ -15,6 +25,16 @@ namespace bot {
             heroes = new List<Hero>();
             heroGemType = new HashSet<GemType>();
         }
+
+        /*public Hero HeroPriority()
+        {
+            foreach (int Number in HeroCounter)
+            {
+                HeroIdEnum SuperHero = (HeroIdEnum) Number;
+                //if(SuperHero.isAlive())  return SuperHero;
+            }
+            return HeroHasMaxDamage();
+        }*/
 
         public Hero HeroFirstFullMana()
         {
