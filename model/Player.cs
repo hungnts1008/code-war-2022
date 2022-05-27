@@ -8,6 +8,16 @@ namespace bot {
         public HashSet<GemType> heroGemType;
         protected Grid grid;
 
+        /*List<HeroIdEnum> HeroCounter = new List<HeroIdEnum>();
+
+        public void Start()
+        {
+            HeroCounter.Add(HeroIdEnum.CERBERUS);
+            HeroCounter.Add(HeroIdEnum.AIR_SPIRIT);
+            HeroCounter.Add(HeroIdEnum.THUNDER_GOD);
+            HeroCounter.Add(HeroIdEnum.FIRE_SPIRIT);
+        }*/
+
         public Player(int playerId, string name)
         {
             this.playerId = playerId;
@@ -17,6 +27,16 @@ namespace bot {
             heroGemType = new HashSet<GemType>();
         }
 
+        /*public Hero HeroPriority()
+        {
+            foreach (int Number in HeroCounter)
+            {
+                HeroIdEnum SuperHero = (HeroIdEnum) Number;
+                //if(SuperHero.isAlive())  return SuperHero;
+            }
+            return HeroHasMaxDamage();
+        }*/
+
         public Hero HeroFirstFullMana()
         {
             if(heroes[0].isAlive() && heroes[0].isFullMana())   return heroes[0];
@@ -25,11 +45,7 @@ namespace bot {
 
         public bool HasAnyBotFullMana()
         {
-            for(int i =1 ; i<3;i++)
-            {
-                if(IsHeroFullMana(i) != null)    return true;
-            }
-            return false;
+            return (heroes[2].isFullMana());
         }
         public bool HeroAlive(int Num)
         {
@@ -49,7 +65,15 @@ namespace bot {
             }
             return res;
         }
-
+        
+        public bool HasAnyHeroFullMana()
+        {
+            foreach(var hero in heroes)
+            {
+                if(hero.isFullMana())   return true;
+            }
+            return false;
+        }
         public Hero HeroHasMaxDamage()
         {
             int dame=0;
@@ -90,6 +114,20 @@ namespace bot {
             }
 
             return heroGemType;
+        }
+
+        public int DameOfFirstAlive()
+        {
+            int res=0;
+            foreach(var hero in heroes)
+            {
+                if(hero.isAlive())
+                {
+                    res=hero.attack;
+                    break;
+                }
+            }
+            return res;
         }
     }
 }

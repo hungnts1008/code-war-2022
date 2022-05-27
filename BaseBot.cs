@@ -29,10 +29,12 @@ namespace bot
         private bool isLogin = false;
 
         private Room room;
-        protected Player botPlayer;
-        protected Player enemyPlayer;
+        public Player botPlayer;
+        public Player enemyPlayer;
         protected int currentPlayerId;
         protected Grid grid;
+        
+        //grid = new Grid()
 
         public void Start()
         {

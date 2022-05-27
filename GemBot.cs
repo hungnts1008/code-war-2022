@@ -35,10 +35,10 @@ namespace bot
             for (int i = 0; i < enemyPlayerHero.Size(); i++)
             {
                 enemyPlayer.heroes.Add(new Hero(enemyPlayerHero.GetSFSObject(i)));
-            }
+            } 
 
             // Gems
-            grid = new Grid(gameSession.GetSFSArray("gems"), botPlayer.getRecommendGemType());
+            grid = new Grid(gameSession.GetSFSArray("gems"), botPlayer.getRecommendGemType() , botPlayer, enemyPlayer);
             currentPlayerId = gameSession.GetInt("currentPlayerId");
             log("StartGame ");
 
@@ -111,24 +111,24 @@ namespace bot
             Hero FirstFull=botPlayer.HeroFirstFullMana();
             if(FirstFull != null) grid.temp++;
 
-            if(FirstFull != null && (FirstFull.hp < 20 || botPlayer.HasAnyBotFullMana()))
+            if(FirstFull != null && (FirstFull.hp <= 18 || botPlayer.HasAnyBotFullMana() ))
             {
                 TaskSchedule(delaySwapGem, _ => SendCastSkill(FirstFull));
                 return;
             }
             else
             {
-                Hero CheckHero2 = botPlayer.IsHeroFullMana(1);
+                Hero CheckHero2 = botPlayer.IsHeroFullMana(2);
                 if(CheckHero2 != null)  
                 {
                     TaskSchedule(delaySwapGem, _ => SendCastSkill(CheckHero2));
                 }
                 else
                 {
-                     Hero CheckHero3 = botPlayer.IsHeroFullMana(2);
-                     if(CheckHero3 != null)
+                     Hero CheckHero1 = botPlayer.IsHeroFullMana(1);
+                     if(CheckHero1 != null)
                      {
-                         TaskSchedule(delaySwapGem, _ =>SendCastSkill(CheckHero3));
+                         TaskSchedule(delaySwapGem, _ =>SendCastSkill(CheckHero1));
                      }
                      else TaskSchedule(delaySwapGem, _ => SendSwapGem());
                 }
